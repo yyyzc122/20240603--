@@ -1,4 +1,11 @@
-function preload(){  //我的圖片檔
+/* MoveNet Skeleton - Steve's Makerspace (most of this code is from TensorFlow)
+
+MoveNet is developed by TensorFlow:
+https://www.tensorflow.org/hub/tutorials/movenet
+
+*/
+
+function preload(){  //圖片檔
   carImg= loadImage("car.gif")
   }
  
@@ -32,9 +39,9 @@ function preload(){  //我的圖片檔
     }
     requestAnimationFrame(getPoses);
   }
- 
+  var car
   async function setup() {
-    createCanvas(640, 480);
+    createCanvas(640,480);
     video = createCapture(VIDEO, videoReady);
     video.size(width, height);
     video.hide();
@@ -42,24 +49,28 @@ function preload(){  //我的圖片檔
  
     stroke(255);
     strokeWeight(5);
+    
+    
+
   }
  
   function draw() {
     image(video, 0, 0);
+    // 繪製骨架
     drawSkeleton();
-    // flip horizontal
+    // 水平翻轉
     cam = get();
     translate(cam.width, 0);
     scale(-1, 1);
     image(cam, 0, 0);
-   
+    
   }
  
   function drawSkeleton() {
-    // Draw all the tracked landmark points
+    // 繪製所有跟蹤到的關鍵點
     for (let i = 0; i < poses.length; i++) {
       pose = poses[i];
-      // shoulder to wrist
+    //肩到手腕
  
       partA = pose.keypoints[0];
  
@@ -67,7 +78,7 @@ function preload(){  //我的圖片檔
         push()
           textSize(40)
           scale(-1,1)
-          text("412737065,車宜蓁",partA.x-width,partA.y-150)  //我的名字
+          text("412737065,車宜蓁",partA.x-width,partA.y-150)  //名字
         pop()
       }
      
@@ -75,47 +86,49 @@ function preload(){  //我的圖片檔
         if (pose.keypoints[j].score > 0.1 && pose.keypoints[j + 2].score > 0.1) {
           partA = pose.keypoints[j];
           partB = pose.keypoints[j + 2];
-          line(partA.x, partA.y, partB.x, partB.y);
+          //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
         }
       }
-      // shoulder to shoulder
+      // 肩到肩
       partA = pose.keypoints[5];
       partB = pose.keypoints[6];
       if (partA.score > 0.1 && partB.score > 0.1) {
-          //line(partA.x, partA.y, partB.x, partB.y);
+          //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
+      
       push()
-        image(carImg,partA.x-75, partA.y-75,150,150)  //左邊肩膀
-        image(carImg,partB.x-75, partB.y-75,150,150)  //右邊肩膀
+        image(carImg,partA.x-75, partA.y-75,150,150)  //左肩圖片
+        image(carImg,partB.x-75, partB.y-75,150,150)  //右肩圖片
       pop()
-       
-       
+      
       }
-      // hip to hip
+       
+      
+      // 臀到臀
       partA = pose.keypoints[11];
       partB = pose.keypoints[12];
       if (partA.score > 0.1 && partB.score > 0.1) {
-        line(partA.x, partA.y, partB.x, partB.y);
+        //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
        
       }
-      // shoulders to hips
+      // 肩到臀
       partA = pose.keypoints[5];
       partB = pose.keypoints[11];
       if (partA.score > 0.1 && partB.score > 0.1) {
-        line(partA.x, partA.y, partB.x, partB.y);
+        //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
        
       }
       partA = pose.keypoints[6];
       partB = pose.keypoints[12];
       if (partA.score > 0.1 && partB.score > 0.1) {
-        line(partA.x, partA.y, partB.x, partB.y);
+        //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
        
       }
-      // hip to foot
+      // 臀到脚
       for (j = 11; j < 15; j++) {
         if (pose.keypoints[j].score > 0.1 && pose.keypoints[j + 2].score > 0.1) {
           partA = pose.keypoints[j];
           partB = pose.keypoints[j + 2];
-          line(partA.x, partA.y, partB.x, partB.y);
+          //line(partA.x, partA.y, partB.x, partB.y);  //不要線條
          
         }
       }
